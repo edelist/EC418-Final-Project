@@ -25,10 +25,15 @@ class SuperTuxDataset(Dataset):
     def __len__(self):
         return len(self.data)
 
+    # def __getitem__(self, idx):
+    #     data = self.data[idx]
+    #     data = self.transform(*data)
+    #     return data
     def __getitem__(self, idx):
-        data = self.data[idx]
-        data = self.transform(*data)
-        return data
+        img, label = self.data[idx]
+        if self.transform:
+            img = self.transform(img)  # Apply transform only to the image
+        return img, label
 
 
 def load_data(dataset_path=DATASET_PATH, transform=dense_transforms.ToTensor(), num_workers=0, batch_size=128):
